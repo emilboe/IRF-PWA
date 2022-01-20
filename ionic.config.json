@@ -1,0 +1,7 @@
+{
+  "name": "IRF-PWA",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
