@@ -4,6 +4,7 @@ import { Redirect, Route } from 'react-router-dom';
 import Menu from './components/Menu';
 import Page from './pages/Page';
 import Login from './pages/Login';
+import Register from './pages/Register';
 import List from './pages/List';
 
 /* Core CSS required for Ionic components to work properly */
@@ -39,6 +40,9 @@ const App: React.FC = () => {
             </Route>
             <Route path="/Login" exact={true}>
               <Login />
+            </Route>
+            <Route path="/Register" exact={true}>
+              <Register />
             </Route>
             <Route path="/List" exact={true}>
               <List />

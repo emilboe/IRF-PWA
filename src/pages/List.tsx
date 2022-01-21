@@ -73,7 +73,7 @@ const List: React.FC = () => {
           ))}
 
         </IonList>
-        <IonButton>Login</IonButton>
+        <IonButton routerLink='/Login'>Login</IonButton>
       </IonContent>
     </IonPage>
   );

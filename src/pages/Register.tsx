@@ -1,27 +1,29 @@
-import { IonItem, IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonInput, IonMenuButton, IonPage, IonText, IonTitle, IonToolbar } from '@ionic/react';
+import { IonItem, IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonInput, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 import { useParams } from 'react-router';
+import { Link, Redirect, Route } from 'react-router-dom';
 import ExploreContainer from '../components/ExploreContainer';
-import { Link, Route } from 'react-router-dom';
 import { lockOpen } from 'ionicons/icons';
 
 import './Page.css';
 import { useEffect, useState } from 'react';
 
-const Login: React.FC = () => {
+const Register: React.FC = () => {
 
   const { name } = useParams<{ name: string; }>();
 
   const [inputUser, setInput] = useState<string>('')
   const [inputPassword, setinputPassword] = useState<string>('')
+  const [inputCPassword, setinputCPassword] = useState<string>('')
 
   // useEffect(() => {
   //   console.table(`username: ${inputUser} pass: ${inputPassword}`)
   // }, [inputUser, inputPassword])
 
 
-  function loginUser() {
-    console.table(`username: ${inputUser} pass: ${inputPassword} `)
+  function registerUser() {
+    console.table(`Registered! U: ${inputUser} P: ${inputPassword} cpass: ${inputCPassword}`)
   }
+
   return (
     <IonPage>
       <IonHeader>
@@ -29,7 +31,7 @@ const Login: React.FC = () => {
           <IonButtons slot="start">
             <IonMenuButton />
           </IonButtons>
-          <IonTitle>Login</IonTitle>
+          <IonTitle>Register</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen className="ion-padding">
@@ -38,7 +40,6 @@ const Login: React.FC = () => {
             <IonTitle size="large">{name}</IonTitle>
           </IonToolbar>
         </IonHeader>
-
 
 
 
@@ -54,24 +55,28 @@ const Login: React.FC = () => {
           value={inputPassword}
           onIonChange={(e: any) => setinputPassword(e.target.value)}>
         </IonInput>
+        <IonInput
+          placeholder="Confirm Password"
+          type="password"
+          value={inputCPassword}
+          onIonChange={(e: any) => setinputCPassword(e.target.value)}>
+        </IonInput>
 
 
 
 
 
-
-
-        <IonButton expand='full' color="secondary" onClick={loginUser}>
+        <IonButton expand="full" color="secondary" onClick={registerUser}>
           <IonIcon slot="end" icon={lockOpen}></IonIcon>
-          Login
+          Register
         </IonButton>
 
         <IonItem>
-          <p>Don't have a user? <Link to="/Register">Register</Link></p>
+          <p>Already have an account? <Link to="/Login">Login</Link></p>
         </IonItem>
       </IonContent>
     </IonPage>
   );
 };
 
-export default Login;
+export default Register;
