@@ -60,7 +60,7 @@ const Login: React.FC = () => {
           message={toastMessage}
           duration={2000}
         />
-        <IonLoading message="logging in..." duration={0} isOpen={busy}></IonLoading>
+        <IonLoading message="Logging you in..." duration={0} isOpen={busy}></IonLoading>
 
 
 
