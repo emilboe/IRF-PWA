@@ -1,4 +1,4 @@
-import { IonItem, IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonInput, IonMenuButton, IonPage, IonText, IonTitle, IonToolbar } from '@ionic/react';
+import { IonToast, IonItem, IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonInput, IonMenuButton, IonPage, IonText, IonTitle, IonToolbar, IonLoading } from '@ionic/react';
 import { useParams } from 'react-router';
 import ExploreContainer from '../components/ExploreContainer';
 import { Link, Route } from 'react-router-dom';
@@ -6,21 +6,36 @@ import { lockOpen } from 'ionicons/icons';
 
 import './Page.css';
 import { useEffect, useState } from 'react';
+import { loginUser } from '../firebaseFunctions';
+import { toast } from '../toast';
 
 const Login: React.FC = () => {
 
   const { name } = useParams<{ name: string; }>();
 
-  const [inputUser, setInput] = useState<string>('')
-  const [inputPassword, setinputPassword] = useState<string>('')
+  const [busy, setBusy] = useState<boolean>(false);
 
-  // useEffect(() => {
-  //   console.table(`username: ${inputUser} pass: ${inputPassword}`)
-  // }, [inputUser, inputPassword])
+  const [inputUser, setInput] = useState<string>('');
+  const [inputPassword, setinputPassword] = useState<string>('');
+  const [toastMessage, setToastMessage] = useState('Logging in...');
+  const [showToast1, setShowToast1] = useState(false);
+
+  async function login() {
+    setBusy(true);
+    const res = await loginUser(inputUser, inputPassword)
+    if (!res) {
+      // toast('Login failed, please try again')
+      setToastMessage('Login failed, please try again')
+      setShowToast1(true)
+    } else {
+      // toast('Login successful! ')
+      setToastMessage('Login Successful!')
+      setShowToast1(true)
+      setBusy(false);
+    }
 
 
-  function loginUser() {
-    console.table(`username: ${inputUser} pass: ${inputPassword} `)
+    console.log(`${res ? 'login success' : 'login failed'}`)
   }
   return (
     <IonPage>
@@ -39,7 +54,13 @@ const Login: React.FC = () => {
           </IonToolbar>
         </IonHeader>
 
-
+        <IonToast
+          isOpen={showToast1}
+          onDidDismiss={() => setShowToast1(false)}
+          message={toastMessage}
+          duration={2000}
+        />
+        <IonLoading message="logging in..." duration={0} isOpen={busy}></IonLoading>
 
 
 
@@ -61,7 +82,7 @@ const Login: React.FC = () => {
 
 
 
-        <IonButton expand='full' color="secondary" onClick={loginUser}>
+        <IonButton expand='full' color="secondary" onClick={login}>
           <IonIcon slot="end" icon={lockOpen}></IonIcon>
           Login
         </IonButton>

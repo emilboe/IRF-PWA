@@ -1,27 +1,56 @@
-import { IonItem, IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonInput, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { IonToast, IonItem, IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonInput, IonMenuButton, IonPage, IonTitle, IonToolbar, IonLoading } from '@ionic/react';
 import { useParams } from 'react-router';
-import { Link, Redirect, Route } from 'react-router-dom';
+import { useHistory, Link, Redirect, Route } from 'react-router-dom';
 import ExploreContainer from '../components/ExploreContainer';
 import { lockOpen } from 'ionicons/icons';
-
+import { registerUser } from '../firebaseFunctions';
 import './Page.css';
 import { useEffect, useState } from 'react';
 
 const Register: React.FC = () => {
 
   const { name } = useParams<{ name: string; }>();
+  let history = useHistory();
 
+  const [busy, setBusy] = useState<boolean>(false);
   const [inputUser, setInput] = useState<string>('')
   const [inputPassword, setinputPassword] = useState<string>('')
   const [inputCPassword, setinputCPassword] = useState<string>('')
+  const [toastMessage, setToastMessage] = useState('Logging in...');
+  const [showToast1, setShowToast1] = useState(false);
 
-  // useEffect(() => {
-  //   console.table(`username: ${inputUser} pass: ${inputPassword}`)
-  // }, [inputUser, inputPassword])
+  async function register() {
+    if (inputPassword !== inputCPassword) {
+      setToastMessage('Passwords do not match.')
+      setShowToast1(true)
+      return
+    }
+    if (inputUser.trim() === '' || inputPassword === '' || inputCPassword === '') {
+      setToastMessage('Please fill in all fields.')
+      setShowToast1(true)
+      return
+    }
+    if (inputPassword.length < 6) {
+      setToastMessage('Password must be at least 6 characters.')
+      setShowToast1(true)
+      return
+    }
+    const res = await registerUser(inputUser, inputPassword)
+    if (!res.success) {
+      setToastMessage('Something went wrong...')
+      setShowToast1(true)
+      console.log(res.message)
+      return
+    } else{
+      setToastMessage('Successfully registered!')
+      setShowToast1(true)
+      console.log(res)
+      history.push('/Login')
+    }
+    console.log(res)
 
 
-  function registerUser() {
-    console.table(`Registered! U: ${inputUser} P: ${inputPassword} cpass: ${inputCPassword}`)
+    // console.table(`Registered! U: ${inputUser} P: ${inputPassword} cpass: ${inputCPassword}`)
   }
 
   return (
@@ -41,6 +70,13 @@ const Register: React.FC = () => {
           </IonToolbar>
         </IonHeader>
 
+        <IonToast
+          isOpen={showToast1}
+          onDidDismiss={() => setShowToast1(false)}
+          message={toastMessage}
+          duration={2000}
+        />
+        <IonLoading message="Creating your account..." duration={0} isOpen={busy}></IonLoading>
 
 
 
@@ -66,7 +102,7 @@ const Register: React.FC = () => {
 
 
 
-        <IonButton expand="full" color="secondary" onClick={registerUser}>
+        <IonButton expand="full" color="secondary" onClick={register}>
           <IonIcon slot="end" icon={lockOpen}></IonIcon>
           Register
         </IonButton>
