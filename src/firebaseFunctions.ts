@@ -17,9 +17,8 @@ export function getCurrentUser() {
     })
 }
 
-export async function loginUser(username: string, password: string) {
+export async function loginUser(email: string, password: string) {
 
-    const email = `${username}@gmail.com`
     // console.log('logging in with: ', email, password)
     //authenticate
     try {

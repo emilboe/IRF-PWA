@@ -19,7 +19,7 @@ const List: React.FC = () => {
           <IonButtons slot="start">
             <IonMenuButton />
           </IonButtons>
-          <IonTitle>List</IonTitle>
+          <IonTitle>Friends</IonTitle>
         </IonToolbar>
       </IonHeader>
 
@@ -30,12 +30,11 @@ const List: React.FC = () => {
           </IonToolbar>
         </IonHeader>
 
-        <IonList>
+        <IonList inset={true}>
           <IonRadioGroup value={selected} onIonChange={e => setSelected(e.detail.value)}>
 
-            <IonItemDivider>Radio list</IonItemDivider>
             <IonListHeader>
-              <IonLabel>Who's your favorite pokemon</IonLabel>
+              <h2>Who's your favorite pokemon?</h2>
             </IonListHeader>
 
             <IonItem>
@@ -72,9 +71,8 @@ const List: React.FC = () => {
           </IonItem>
 
           <IonItemDivider>Other</IonItemDivider>
-          <IonItem >
-            <IonLabel >Input</IonLabel>
-            <IonInput></IonInput>
+          <IonItem>
+            <IonInput placeholder="Text input..." className="ion-text-center"></IonInput>
           </IonItem>
           <IonItem>
             <IonLabel>Toggle</IonLabel>

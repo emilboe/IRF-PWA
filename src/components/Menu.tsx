@@ -18,6 +18,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { logoutUser } from '../firebaseFunctions'
 import { setUserState } from '../redux/actions';
+import { useEffect } from 'react';
 
 interface AppPage {
   url: string;
@@ -75,7 +76,9 @@ const Menu: React.FC = () => {
 
 
   const toggle: any = document.querySelector('#themeToggle');
-  toggle.checked = true
+
+  // toggle.checked = true
+
 
   // Listen for the toggle check/uncheck to toggle the dark class on the <body>
   if (toggle != null) {
@@ -121,11 +124,16 @@ const Menu: React.FC = () => {
         </IonList>
         <IonList>
           {username ?
-            <IonItem onClick={() => {
-              logoutUser();
-              dispatch(setUserState(''))
-              history.replace('/Login')
-            }}>
+            <IonItem
+              routerLink={'/'}
+              routerDirection="none"
+              lines="full" 
+              detail={false}
+              onClick={() => {
+                logoutUser();
+                dispatch(setUserState(''))
+                history.replace('/Login')
+              }}>
               <IonIcon slot="start" icon={logOut} />
               <IonLabel>Log out</IonLabel>
             </IonItem>
@@ -166,3 +174,7 @@ const Menu: React.FC = () => {
 };
 
 export default Menu;
+function componentDidMount() {
+  throw new Error('Function not implemented.');
+}
+

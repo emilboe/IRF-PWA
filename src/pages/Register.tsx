@@ -13,7 +13,7 @@ const Register: React.FC = () => {
   let history = useHistory();
 
   const [busy, setBusy] = useState<boolean>(false);
-  const [inputUser, setInput] = useState<string>('')
+  const [inputEmail, setEmail] = useState<string>('')
   const [inputPassword, setinputPassword] = useState<string>('')
   const [inputCPassword, setinputCPassword] = useState<string>('')
   const [toastMessage, setToastMessage] = useState('Logging in...');
@@ -25,7 +25,7 @@ const Register: React.FC = () => {
       setShowToast1(true)
       return
     }
-    if (inputUser.trim() === '' || inputPassword === '' || inputCPassword === '') {
+    if (inputEmail.trim() === '' || inputPassword === '' || inputCPassword === '') {
       setToastMessage('Please fill in all fields.')
       setShowToast1(true)
       return
@@ -35,7 +35,7 @@ const Register: React.FC = () => {
       setShowToast1(true)
       return
     }
-    const res = await registerUser(inputUser, inputPassword)
+    const res = await registerUser(inputEmail, inputPassword)
     if (!res.success) {
       setToastMessage('Something went wrong...')
       setShowToast1(true)
@@ -50,7 +50,7 @@ const Register: React.FC = () => {
     console.log(res)
 
 
-    // console.table(`Registered! U: ${inputUser} P: ${inputPassword} cpass: ${inputCPassword}`)
+    // console.table(`Registered! U: ${inputEmail} P: ${inputPassword} cpass: ${inputCPassword}`)
   }
 
   return (
@@ -81,9 +81,10 @@ const Register: React.FC = () => {
 
 
         <IonInput
-          placeholder="Username"
-          value={inputUser}
-          onIonChange={(e: any) => setInput(e.target.value)}>
+          placeholder="Email"
+          type="email"
+          value={inputEmail}
+          onIonChange={(e: any) => setEmail(e.target.value)}>
         </IonInput>
         <IonInput
           placeholder="Password"

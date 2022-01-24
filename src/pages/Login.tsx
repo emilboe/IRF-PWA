@@ -1,4 +1,4 @@
-import { IonToast, IonItem, IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonInput, IonMenuButton, IonPage, IonTitle, IonToolbar, IonLoading, IonList, IonLabel } from '@ionic/react';
+import { IonToast, IonItem, IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonInput, IonMenuButton, IonPage, IonTitle, IonToolbar, IonLoading, IonList, IonLabel, IonCheckbox } from '@ionic/react';
 import { useParams } from 'react-router';
 import { useHistory, Link } from 'react-router-dom';
 import { lockOpen } from 'ionicons/icons';
@@ -21,10 +21,10 @@ const Login: React.FC = () => {
   const [inputPassword, setinputPassword] = useState<string>('');
   const [toastMessage, setToastMessage] = useState('Logging in...');
   const [showToast1, setShowToast1] = useState(false);
+
   useEffect(() => {
-    // Update the document title using the browser API
-    document.title = ` ${inputEmail}`;
   });
+
   async function login() {
     if (inputEmail.trim() === '' || inputPassword === '') {
       setToastMessage('Please fill in all fields.')
@@ -65,7 +65,7 @@ const Login: React.FC = () => {
           <IonTitle>Login</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent fullscreen className="ion-padding">
+      <IonContent fullscreen>
         <IonHeader collapse="condense">
           <IonToolbar>
             <IonTitle size="large">{name}</IonTitle>
@@ -80,40 +80,59 @@ const Login: React.FC = () => {
         />
         <IonLoading message="Logging you in..." duration={0} isOpen={busy}></IonLoading>
 
-
-        <IonList>
+        <form className="ion-padding">
           <IonItem>
+            <IonLabel position="floating">Email</IonLabel>
             <IonInput
               placeholder="Email"
               type='email'
               value={inputEmail}
-              onIonChange={(e: any) => setEmail(e.target.value)}>
-            </IonInput>
+              onKeyUp={(e) => {
+                if (e.keyCode === 13) {
+                  // Cancel the default action, if needed
+                  e.preventDefault();
+                  // Trigger the button element with a click
+                  login();
+                }
+              }}
+              onIonChange={(e: any) => setEmail(e.target.value)}></IonInput>
           </IonItem>
           <IonItem>
-            <IonInput
+            <IonLabel position="floating">Password</IonLabel>
+            <IonInput className="ion-padding"
               placeholder="Password"
               type="password"
               value={inputPassword}
-              onIonChange={(e: any) => setinputPassword(e.target.value)}>
-            </IonInput>
+              onIonChange={(e: any) => setinputPassword(e.target.value)}
+              onKeyUp={(e) => {
+                if (e.keyCode === 13) {
+                  // Cancel the default action, if needed
+                  e.preventDefault();
+                  // Trigger the button element with a click
+                  login();
+                }
+              }}
+            />
           </IonItem>
-        </IonList>
 
+          {/* <IonItem lines="none">
+            <IonLabel>Remember me</IonLabel>
+            <IonCheckbox defaultChecked={true} slot="start" />
+          </IonItem> */}
 
+          <IonButton
+            className="ion-margin-top"
+            type="submit"
+            expand="block"
+            onClick={login}
+            color="secondary" >
+            Login
+          </IonButton>
+          <p className='ion-text-center'>Don't have an account? <Link to="/Register">Register</Link></p>
+        </form>
 
-
-
-        <IonButton expand='full' color="secondary" onClick={login}>
-          <IonIcon slot="end" icon={lockOpen}></IonIcon>
-          Login
-        </IonButton>
-
-        <IonItem>
-          <p>Don't have a user? <Link to="/Register">Register</Link></p>
-        </IonItem>
       </IonContent>
-    </IonPage>
+    </IonPage >
   );
 };
 
