@@ -12,6 +12,15 @@ export default function reducer(
     // work with state
     switch (type) {
         case 'SET_USER_STATE':
+            console.log('user set payload: ', payload)
+            return {
+                ...state,
+                user: {
+                    username: capitalizeFirstLetter(payload.split('@')[0])
+                }
+            }
+
+        case 'SET_DARK_MODE':
             console.log('reducing payload to : ', payload)
             return {
                 ...state,

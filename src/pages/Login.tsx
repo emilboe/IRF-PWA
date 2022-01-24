@@ -1,10 +1,10 @@
-import { IonToast, IonItem, IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonInput, IonMenuButton, IonPage, IonTitle, IonToolbar, IonLoading } from '@ionic/react';
+import { IonToast, IonItem, IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonInput, IonMenuButton, IonPage, IonTitle, IonToolbar, IonLoading, IonList, IonLabel } from '@ionic/react';
 import { useParams } from 'react-router';
 import { useHistory, Link } from 'react-router-dom';
 import { lockOpen } from 'ionicons/icons';
 
 import './Page.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { loginUser } from '../firebaseFunctions';
 import { setUserState } from '../redux/actions';
 import { useDispatch } from 'react-redux';
@@ -17,14 +17,22 @@ const Login: React.FC = () => {
 
   const [busy, setBusy] = useState<boolean>(false);
 
-  const [inputUser, setInput] = useState<string>('');
+  const [inputEmail, setEmail] = useState<string>('');
   const [inputPassword, setinputPassword] = useState<string>('');
   const [toastMessage, setToastMessage] = useState('Logging in...');
   const [showToast1, setShowToast1] = useState(false);
-
+  useEffect(() => {
+    // Update the document title using the browser API
+    document.title = ` ${inputEmail}`;
+  });
   async function login() {
+    if (inputEmail.trim() === '' || inputPassword === '') {
+      setToastMessage('Please fill in all fields.')
+      setShowToast1(true)
+      return
+    }
     setBusy(true);
-    const res = await loginUser(inputUser, inputPassword)
+    const res: any = await loginUser(inputEmail, inputPassword)
     let message
     if (res instanceof Error) {
       message = res.message
@@ -33,17 +41,16 @@ const Login: React.FC = () => {
       setBusy(false);
     }
     else {
-      message = Object(res)
-      console.log('this is apparently the msg', message.user._delegate.email)
-      dispatch(setUserState(message.user._delegate.email))
+      // console.log('this is apparently the msg', message.user._delegate.email)
       setToastMessage('Login Successful!')
       setShowToast1(true)
+      dispatch(setUserState(res.user._delegate.email))
       setBusy(false);
       history.replace('/List')
     }
 
 
-    console.log(`${res ? 'login success' : 'login failed'}`)
+    // console.log(`${res.success ? 'login success' : 'login failed'}`)
   }
 
 
@@ -69,25 +76,29 @@ const Login: React.FC = () => {
           isOpen={showToast1}
           onDidDismiss={() => setShowToast1(false)}
           message={toastMessage}
-          duration={2000}
+          duration={4000}
         />
         <IonLoading message="Logging you in..." duration={0} isOpen={busy}></IonLoading>
 
 
-
-        <IonInput
-          placeholder="Username"
-          value={inputUser}
-          onIonChange={(e: any) => setInput(e.target.value)}>
-        </IonInput>
-        <IonInput
-          placeholder="Password"
-          type="password"
-          value={inputPassword}
-          onIonChange={(e: any) => setinputPassword(e.target.value)}>
-        </IonInput>
-
-
+        <IonList>
+          <IonItem>
+            <IonInput
+              placeholder="Email"
+              type='email'
+              value={inputEmail}
+              onIonChange={(e: any) => setEmail(e.target.value)}>
+            </IonInput>
+          </IonItem>
+          <IonItem>
+            <IonInput
+              placeholder="Password"
+              type="password"
+              value={inputPassword}
+              onIonChange={(e: any) => setinputPassword(e.target.value)}>
+            </IonInput>
+          </IonItem>
+        </IonList>
 
 
 

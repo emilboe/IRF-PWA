@@ -20,27 +20,25 @@ export function getCurrentUser() {
 export async function loginUser(username: string, password: string) {
 
     const email = `${username}@gmail.com`
-    console.log('logging in with: ', email, password)
+    // console.log('logging in with: ', email, password)
     //authenticate
     try {
         const res = await auth.signInWithEmailAndPassword(email, password)
-        console.log(res);
+        // console.log(res);
         return res
     } catch (error) {
-        console.log('login error: ', error);
+        // console.log('login error: ', error);
         return error
     }
 
 }
 
 export function logoutUser() {
-    console.log('trying to log out')
+    console.log('logging out')
     return auth.signOut()
 }
 
-export async function registerUser(username: string, password: string) {
-
-    const email = `${username}@gmail.com`
+export async function registerUser(email: string, password: string) {
 
     try {
         const res = await auth.createUserWithEmailAndPassword(email, password)
