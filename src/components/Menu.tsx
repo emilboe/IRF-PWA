@@ -10,9 +10,13 @@ import {
   IonNote,
 } from '@ionic/react';
 
-import { useLocation } from 'react-router-dom';
-import { logIn, list, archiveOutline, archiveSharp, bookmarkOutline, heartOutline, heartSharp, mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, trashOutline, trashSharp, warningOutline, warningSharp } from 'ionicons/icons';
+import { useHistory, useLocation } from 'react-router-dom';
+import { logIn, list, archiveOutline, archiveSharp, bookmarkOutline, heartOutline, heartSharp, mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, trashOutline, trashSharp, warningOutline, warningSharp, logOut } from 'ionicons/icons';
 import './Menu.css';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { logoutUser } from '../firebaseFunctions'
+import { setUserState } from '../redux/actions';
 
 interface AppPage {
   url: string;
@@ -64,21 +68,38 @@ const labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
 
 const Menu: React.FC = () => {
   const location = useLocation();
+  const history = useHistory()
+  const dispatch = useDispatch()
+  const username = useSelector((state: any) => state.user.username)
 
   return (
     <IonMenu contentId="main" type="overlay">
       <IonContent>
         <IonList id="inbox-list">
           <IonListHeader>Inbox</IonListHeader>
-          <IonNote>hi@ionicframework.com</IonNote>
+          <IonNote>{username ? `Hey, ${username}!` : ''} </IonNote>
+          {username ?
+            <div>
+              <IonItem onClick={() => {
+                logoutUser();
+                dispatch(setUserState(''))
+                history.replace('/Login')
+              }}>
+                <IonIcon slot="start" icon={logOut} />
+                <IonLabel>Log out</IonLabel>
+              </IonItem>
+              <IonItem className={location.pathname === '/List' ? 'selected' : ''} routerLink={'/List'} routerDirection="none" lines="none" detail={false}>
+                <IonIcon slot="start" icon={list} />
+                <IonLabel>List</IonLabel>
+              </IonItem>
+            </div>
+            :
             <IonItem className={location.pathname === '/Login' ? 'selected' : ''} routerLink={'/Login'} routerDirection="none" lines="none" detail={false}>
               <IonIcon slot="start" icon={logIn} />
               <IonLabel>Login</IonLabel>
             </IonItem>
-            <IonItem className={location.pathname === '/List' ? 'selected' : ''} routerLink={'/List'} routerDirection="none" lines="none" detail={false}>
-              <IonIcon slot="start" icon={list} />
-              <IonLabel>List</IonLabel>
-            </IonItem>
+          }
+
 
           {appPages.map((appPage, index) => {
             return (

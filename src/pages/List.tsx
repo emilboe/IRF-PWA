@@ -1,8 +1,8 @@
-import { IonItemSliding, IonButton, IonButtons, IonContent, IonHeader, IonList, IonMenuButton, IonPage, IonTitle, IonToolbar, IonItem, IonItemOptions, IonItemOption, IonText, IonLabel, IonAvatar, IonIcon } from '@ionic/react';
+import { IonItemSliding, IonButton, IonButtons, IonContent, IonHeader, IonList, IonMenuButton, IonPage, IonTitle, IonToolbar, IonItem, IonItemOptions, IonItemOption, IonLabel, IonAvatar, IonIcon } from '@ionic/react';
 import { useParams } from 'react-router';
-import ExploreContainer from '../components/ExploreContainer';
 import { trashBin } from 'ionicons/icons';
 import './Page.css';
+import { useSelector } from 'react-redux';
 
 const List: React.FC = () => {
 
@@ -33,6 +33,10 @@ const List: React.FC = () => {
       url: "i0mRkg2.jpg"
     }
   ]
+
+
+  const username = useSelector((state: any) => state.user.username)
+
   return (
     <IonPage>
       <IonHeader>
@@ -40,7 +44,7 @@ const List: React.FC = () => {
           <IonButtons slot="start">
             <IonMenuButton />
           </IonButtons>
-          <IonTitle>Login</IonTitle>
+          <IonTitle>List</IonTitle>
         </IonToolbar>
       </IonHeader>
 
@@ -52,11 +56,12 @@ const List: React.FC = () => {
         </IonHeader>
 
         <IonList className="ion-padding">
+          <IonItem>{username}</IonItem>
           {DataArray.map(elem => (
             <IonItemSliding key={elem.num}>
               <IonItem>
                 <IonAvatar>
-                  <img src={`https://i.imgur.com/${elem.url}`} />
+                  <img alt="avatar" src={`https://i.imgur.com/${elem.url}`} />
                 </IonAvatar>
 
                 <IonLabel className="ion-padding">
@@ -73,7 +78,6 @@ const List: React.FC = () => {
           ))}
 
         </IonList>
-        <IonButton routerLink='/Login'>Login</IonButton>
       </IonContent>
     </IonPage>
   );

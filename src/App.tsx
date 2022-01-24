@@ -25,10 +25,33 @@ import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
+import { useEffect } from 'react';
+import { getCurrentUser } from './firebaseFunctions';
+import { setUserState } from './redux/actions';
+import { useDispatch, useSelector } from 'react-redux';
 
 setupIonicReact();
 
 const App: React.FC = () => {
+
+  const username = useSelector((state: any) => state.user.username)
+
+  // useEffect(() => {
+  //   getCurrentUser().then((user: any) => {
+  //     if (user) {
+  //       console.log("logged in", user.email)
+  //       dispatch(setUserState(user.email))
+  //     }
+  //     else console.log("not logged in i gues")
+  //   })
+
+  // })
+
+  // const initialState = getCurrentUser()
+  // const [userData, setUserData] = useState(initialState);
+
+  // console.log(userData)
+
   return (
     <IonApp>
       <IonReactRouter>
@@ -45,7 +68,7 @@ const App: React.FC = () => {
               <Register />
             </Route>
             <Route path="/List" exact={true}>
-              <List />
+              {!username ? <Redirect to="/Login" /> : <List />}
             </Route>
             <Route path="/page/:name" exact={true}>
               <Page />

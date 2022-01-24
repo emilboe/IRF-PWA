@@ -1,17 +1,19 @@
-import { IonToast, IonItem, IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonInput, IonMenuButton, IonPage, IonText, IonTitle, IonToolbar, IonLoading } from '@ionic/react';
+import { IonToast, IonItem, IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonInput, IonMenuButton, IonPage, IonTitle, IonToolbar, IonLoading } from '@ionic/react';
 import { useParams } from 'react-router';
-import ExploreContainer from '../components/ExploreContainer';
-import { Link, Route } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import { lockOpen } from 'ionicons/icons';
 
 import './Page.css';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { loginUser } from '../firebaseFunctions';
-import { toast } from '../toast';
+import { setUserState } from '../redux/actions';
+import { useDispatch } from 'react-redux';
 
 const Login: React.FC = () => {
 
   const { name } = useParams<{ name: string; }>();
+  const dispatch = useDispatch()
+  const history = useHistory()
 
   const [busy, setBusy] = useState<boolean>(false);
 
@@ -23,20 +25,29 @@ const Login: React.FC = () => {
   async function login() {
     setBusy(true);
     const res = await loginUser(inputUser, inputPassword)
-    if (!res) {
-      // toast('Login failed, please try again')
-      setToastMessage('Login failed, please try again')
+    let message
+    if (res instanceof Error) {
+      message = res.message
+      setToastMessage(res.message)
       setShowToast1(true)
-    } else {
-      // toast('Login successful! ')
+      setBusy(false);
+    }
+    else {
+      message = Object(res)
+      console.log('this is apparently the msg', message.user._delegate.email)
+      dispatch(setUserState(message.user._delegate.email))
       setToastMessage('Login Successful!')
       setShowToast1(true)
       setBusy(false);
+      history.replace('/List')
     }
 
 
     console.log(`${res ? 'login success' : 'login failed'}`)
   }
+
+
+
   return (
     <IonPage>
       <IonHeader>
