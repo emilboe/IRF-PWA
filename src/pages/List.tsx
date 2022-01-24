@@ -19,7 +19,7 @@ const List: React.FC = () => {
           <IonButtons slot="start">
             <IonMenuButton />
           </IonButtons>
-          <IonTitle>Friends</IonTitle>
+          <IonTitle>List</IonTitle>
         </IonToolbar>
       </IonHeader>
 

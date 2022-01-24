@@ -44,6 +44,12 @@ const Friends: React.FC = () => {
   ]
 
 
+  function removeElement(e: any) {
+    var killerID = e.currentTarget.parentNode.parentNode.id
+    console.log('killerID: ', killerID)
+    var el: any = document.getElementById(killerID);
+    el.remove(); // Removes the div with the 'div-02' id
+  }
 
   return (
     <IonPage>
@@ -52,20 +58,21 @@ const Friends: React.FC = () => {
           <IonButtons slot="start">
             <IonMenuButton />
           </IonButtons>
-          <IonTitle>List</IonTitle>
+          <IonTitle>Friends</IonTitle>
         </IonToolbar>
       </IonHeader>
-
       <IonContent fullscreen>
         <IonHeader collapse="condense">
           <IonToolbar>
             <IonTitle size="large">{name}</IonTitle>
           </IonToolbar>
         </IonHeader>
-
+        <IonListHeader>
+          <h2>Try dragging</h2>
+        </IonListHeader>
         <IonList className="ion-padding" inset={true}>
           {DataArray.map(elem => (
-            <IonItemSliding key={elem.num}>
+            <IonItemSliding key={elem.num} id={elem.num.toString()}>
               <IonItem>
                 <IonAvatar>
                   <img alt="avatar" src={`https://i.imgur.com/${elem.url}`} />
@@ -78,7 +85,7 @@ const Friends: React.FC = () => {
               </IonItem>
 
               <IonItemOptions side="end">
-                <IonItemOption color="danger" onClick={() => alert("deleted")} ><IonIcon icon={trashBin}></IonIcon></IonItemOption>
+                <IonItemOption color="danger" onClick={e => removeElement(e)} ><IonIcon icon={trashBin}></IonIcon></IonItemOption>
               </IonItemOptions>
 
             </IonItemSliding>
@@ -86,7 +93,7 @@ const Friends: React.FC = () => {
 
         </IonList>
       </IonContent>
-    </IonPage>
+    </IonPage >
   );
 };
 

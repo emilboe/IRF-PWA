@@ -80,7 +80,7 @@ const Login: React.FC = () => {
         />
         <IonLoading message="Logging you in..." duration={0} isOpen={busy}></IonLoading>
 
-        <form className="ion-padding">
+        <div className="ion-padding">
           <IonItem>
             <IonLabel position="floating">Email</IonLabel>
             <IonInput
@@ -122,14 +122,13 @@ const Login: React.FC = () => {
 
           <IonButton
             className="ion-margin-top"
-            type="submit"
             expand="block"
             onClick={login}
             color="secondary" >
             Login
           </IonButton>
           <p className='ion-text-center'>Don't have an account? <Link to="/Register">Register</Link></p>
-        </form>
+        </div>
 
       </IonContent>
     </IonPage >
