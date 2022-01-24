@@ -1,2 +1,2 @@
 # IRF-PWA
-Ionic, React and Firebase used to make my first Progressive Web App with login authentication
+My first project with Ionic, React, Redux and Firebase used to make a Progressive Web App with registration and login authentication.
